@@ -1,0 +1,22 @@
+site:
+  guid: "f5bdf871-20a7-4bc0-865b-e7a1a56b6a43"
+
+httpApi:
+  url: "http://192.168.3.90/doornock/www/"
+  apiKey: "odzHvfgAiTURslpyAL9uSd9lOUgcWPIXJAbbRz8Rus4ytEuc8T"
+  port: 12345
+  nodeId: '1'
+
+nfc:
+  aid: "F0394148148111"
+
+doors:
+  -
+    id: 9
+    type: gpio
+    gpio: 0
+    closeIsZero: false
+
+  -
+    id: 10
+    type: echo

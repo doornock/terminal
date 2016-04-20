@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_nfc" default="compile.module.nfc">
+  <dirname property="module.nfc.basedir" file="${ant.file.module_nfc}"/>
+  
+  <property name="module.jdk.home.nfc" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.nfc" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.nfc" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.nfc" value="-encoding UTF-8 -source 1.6 -target 1.6 ${compiler.args}"/>
+  
+  <property name="nfc.output.dir" value="${module.nfc.basedir}/../out/production/nfc"/>
+  <property name="nfc.testoutput.dir" value="${module.nfc.basedir}/../out/test/nfc"/>
+  
+  <path id="nfc.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="nfc.module.production.classpath">
+    <path refid="${module.jdk.classpath.nfc}"/>
+    <path refid="library.cz.sodae.hardware.nfc.classpath"/>
+  </path>
+  
+  <path id="nfc.runtime.production.module.classpath">
+    <pathelement location="${nfc.output.dir}"/>
+    <path refid="library.cz.sodae.hardware.nfc.classpath"/>
+  </path>
+  
+  <path id="nfc.module.classpath">
+    <path refid="${module.jdk.classpath.nfc}"/>
+    <pathelement location="${nfc.output.dir}"/>
+    <path refid="library.cz.sodae.hardware.nfc.classpath"/>
+  </path>
+  
+  <path id="nfc.runtime.module.classpath">
+    <pathelement location="${nfc.testoutput.dir}"/>
+    <pathelement location="${nfc.output.dir}"/>
+    <path refid="library.cz.sodae.hardware.nfc.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.nfc">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.nfc">
+    <patternset refid="excluded.from.module.nfc"/>
+  </patternset>
+  
+  <path id="nfc.module.sourcepath">
+    <dirset dir="${module.nfc.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.nfc" depends="compile.module.nfc.production,compile.module.nfc.tests" description="Compile module nfc"/>
+  
+  <target name="compile.module.nfc.production" depends="register.custom.compilers" description="Compile module nfc; production classes">
+    <mkdir dir="${nfc.output.dir}"/>
+    <javac2 destdir="${nfc.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.nfc}/javac">
+      <compilerarg line="${compiler.args.nfc}"/>
+      <bootclasspath refid="nfc.module.bootclasspath"/>
+      <classpath refid="nfc.module.production.classpath"/>
+      <src refid="nfc.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.nfc"/>
+    </javac2>
+    
+    <copy todir="${nfc.output.dir}">
+      <fileset dir="${module.nfc.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.nfc.tests" depends="register.custom.compilers,compile.module.nfc.production" description="compile module nfc; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.nfc" description="cleanup module">
+    <delete dir="${nfc.output.dir}"/>
+    <delete dir="${nfc.testoutput.dir}"/>
+  </target>
+</project>
