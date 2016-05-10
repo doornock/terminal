@@ -21,6 +21,16 @@ public class NonBlockingDoorControl implements DoorControl {
         doorThread.start();
     }
 
+
+    /**
+     * Stop internal thread
+     */
+    public void release() {
+        this.countdowner.expandTime(Integer.MIN_VALUE);
+        doorThread.interrupt();
+    }
+
+
     /**
      * Non blocking
      *

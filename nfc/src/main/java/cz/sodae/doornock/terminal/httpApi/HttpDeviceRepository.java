@@ -18,18 +18,10 @@ import java.security.spec.InvalidKeySpecException;
 
 class HttpDeviceRepository implements DeviceRepository {
 
-    ApiSender apiSender = new ApiSender();
+    private ApiServerSender apiServerSender;
 
-    private String apiUrl;
-
-    private String nodeId;
-
-    private String apiKey;
-
-    public HttpDeviceRepository(String apiUrl, String nodeId, String apiKey) {
-        this.apiUrl = apiUrl.replaceAll("/+$", "");
-        this.nodeId = nodeId;
-        this.apiKey = apiKey;
+    public HttpDeviceRepository(ApiServerSender apiServerSender) {
+        this.apiServerSender = apiServerSender;
     }
 
     public Device getByDeviceId(String id) {
@@ -50,12 +42,9 @@ class HttpDeviceRepository implements DeviceRepository {
 
     protected Device ask(String deviceId) {
         try {
-            StringBuilder sb = new StringBuilder();
-            sb.append(this.apiUrl)
-                    .append("/api/v1/node/device-permission?device_id=")
-                    .append(URLEncoder.encode(deviceId, "UTF-8"));
-
-            JSONObject json = apiSender.get(sb.toString(), this.nodeId, this.apiKey);
+            JSONObject json = apiServerSender.secureGet(
+                    "/api/v1/node/device-permission?device_id=" + URLEncoder.encode(deviceId, "UTF-8")
+            );
 
             json = json.getJSONObject("data");
 

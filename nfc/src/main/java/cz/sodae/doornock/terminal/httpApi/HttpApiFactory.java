@@ -12,18 +12,28 @@ public class HttpApiFactory {
     }
 
 
+    private ApiServerSender createApiSender() {
+        return new ApiServerSender(
+                definition.getUrl(),
+                definition.getNodeId(),
+                definition.getApiKey()
+        );
+    }
+
+
     private ApiKeyValidator createValidator() {
         return new Hmac256ApiValidator(this.definition.getApiKey());
     }
 
 
     public DeviceRepository createDeviceRepository() {
-        return new HttpDeviceRepository(
-                definition.getUrl(),
-                definition.getNodeId(),
-                definition.getApiKey()
-        );
+        return new HttpDeviceRepository(createApiSender());
     }
+
+    public ServerConfiguration createServerConfiguration() {
+        return new ServerConfiguration(createApiSender());
+    }
+
 
     public HttpApi createService() {
         return new HttpApi(this.createValidator(), definition.getPort());

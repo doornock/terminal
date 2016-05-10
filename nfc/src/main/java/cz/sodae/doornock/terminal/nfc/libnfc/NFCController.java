@@ -32,8 +32,13 @@ public class NFCController {
     private boolean isRunning = true;
 
     static {
-        System.loadLibrary("hardware_nfc");
-        System.out.print("Library loaded");
+        try {
+            System.loadLibrary("hardware_nfc");
+            System.out.println("NFC library loaded");
+        } catch (UnsatisfiedLinkError e) {
+            System.out.println("Unable load NFC library");
+            e.printStackTrace();
+        }
     }
 
 

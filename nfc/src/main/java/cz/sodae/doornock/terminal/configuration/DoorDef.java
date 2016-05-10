@@ -10,6 +10,9 @@ public class DoorDef {
 
     private Boolean closeIsZero;
 
+    private Boolean gpioIsOutput;
+
+
     public String getId() {
         return id;
     }
@@ -40,5 +43,13 @@ public class DoorDef {
 
     public void setCloseIsZero(Boolean closeIsZero) {
         this.closeIsZero = closeIsZero;
+    }
+
+    public Boolean getGpioIsOutput() {
+        return gpioIsOutput;
+    }
+
+    public void setGpioIsOutput(Boolean gpioIsOutput) {
+        this.gpioIsOutput = gpioIsOutput;
     }
 }

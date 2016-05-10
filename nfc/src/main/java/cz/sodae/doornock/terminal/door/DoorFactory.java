@@ -6,7 +6,7 @@ public class DoorFactory {
 
     public DoorResource createDoorResource(DoorDef doorDef) throws Exception {
         if (doorDef.getType().equals("gpio")) {
-            return new WiringPiDoorResource(doorDef.getGpio(), doorDef.getCloseIsZero());
+            return new WiringPiDoorResource(doorDef.getGpio(), doorDef.getCloseIsZero(), doorDef.getGpioIsOutput());
         } else if (doorDef.getType().equals("echo")) {
             return new EchoDoorResource(doorDef.getId());
         }

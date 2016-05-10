@@ -7,4 +7,10 @@ public interface DoorControl {
      * @param openingTime time how long will be lock unlocked in milliseconds
      */
     void openFor(int openingTime);
+
+    /**
+     * Program releasing this controller
+     */
+    void release();
+
 }

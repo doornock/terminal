@@ -17,6 +17,14 @@ class DoorsContainer implements OpenDoor, AccessSignal {
     }
 
 
+    public void clear() {
+        for (DoorControl door : doors.values()) {
+            door.release();
+        }
+        this.doors.clear();
+    }
+
+
     public void openDoor(String doorId, int openingTime) throws OpenDoor.DoorNotFoundException {
         if (!doors.containsKey(doorId)) {
             throw new OpenDoor.DoorNotFoundException();

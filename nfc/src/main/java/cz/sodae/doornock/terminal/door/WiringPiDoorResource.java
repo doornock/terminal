@@ -7,20 +7,24 @@ public class WiringPiDoorResource implements DoorResource {
 
     boolean closeIsZero;
 
+    boolean isOutput;
+
     /**
      * @param gpioPin by wiringPi annotation, supports: 0,2,3,4 and 5
      */
-    public WiringPiDoorResource(int gpioPin, boolean closeIsZero) throws UnsupportedPinException {
+    public WiringPiDoorResource(int gpioPin, boolean closeIsZero, boolean isOutput) throws UnsupportedPinException {
         if (!(gpioPin == 0 || gpioPin >= 2 && gpioPin <= 5)) {
             throw new UnsupportedPinException(gpioPin);
         }
         this.gpioPin = gpioPin;
         this.closeIsZero = closeIsZero;
+        this.isOutput = isOutput;
     }
 
     public void init() {
         try {
-            Runtime.getRuntime().exec("gpio mode " + gpioPin + " output").waitFor();
+            String type = isOutput ? "output" : "input";
+            Runtime.getRuntime().exec("gpio mode " + gpioPin + " " + type).waitFor();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
