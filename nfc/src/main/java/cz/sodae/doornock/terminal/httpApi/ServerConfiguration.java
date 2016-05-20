@@ -28,9 +28,11 @@ public class ServerConfiguration implements Configuration {
             site.setGuid(jsonObject.getJSONObject("site").getString("guid"));
             def.setSite(site);
 
-            NfcDef nfcDef = new NfcDef();
-            nfcDef.setAid(jsonObject.getJSONObject("nfc").getString("aid"));
-            def.setNfc(nfcDef);
+            if (jsonObject.has("nfc")) {
+                NfcDef nfcDef = new NfcDef();
+                nfcDef.setAid(jsonObject.getJSONObject("nfc").getString("aid"));
+                def.setNfc(nfcDef);
+            }
 
             ArrayList<DoorDef> doorList = new ArrayList<DoorDef>();
 

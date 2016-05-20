@@ -47,6 +47,7 @@ public class NFCController {
             thread = new Thread(new Process());
             thread.start();
         }
+        isRunning = true;
     }
 
     public synchronized void stop() {
@@ -58,7 +59,6 @@ public class NFCController {
 
         public void run() {
             System.out.print("Run!");
-            isRunning = true;
             while (isRunning) {
 
                 try {

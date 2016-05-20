@@ -27,6 +27,9 @@ public class Application {
     private String configFile;
 
 
+    private NFCService nfcService;
+
+
     /**
      * Devices repository
      */
@@ -36,10 +39,6 @@ public class Application {
      * Doors
      */
     private DoorsContainer doorsContainer = new DoorsContainer();
-
-
-    private HttpApi apiServer;
-
 
     /**
      * Services which is started after basic configuration and shutdowned
@@ -73,6 +72,11 @@ public class Application {
 
     public DeviceRepository getDeviceRepository() {
         return deviceRepository;
+    }
+
+
+    public Application() {
+        this.nfcService = new NFCService();
     }
 
     public void configFile(String filename) throws LoadConfigException, InterruptedException {
@@ -146,7 +150,7 @@ public class Application {
             configDef = config;
 
             deviceRepository = httpApiFactory.createDeviceRepository();
-            apiServer = httpApiFactory.createService();
+            HttpApi apiServer = httpApiFactory.createService();
 
             apiServer.start(this);
             services.add(apiServer);
@@ -161,9 +165,9 @@ public class Application {
                 );
             }
 
+            services.remove(nfcService);
             if (configDef.getNfc() != null) {
-                NFCFactory NFCFactory = new NFCFactory(configDef.getNfc());
-                NFCService nfcService = NFCFactory.createService();
+                nfcService.config(configDef.getNfc());
                 nfcService.start(this);
                 services.add(nfcService);
             }
